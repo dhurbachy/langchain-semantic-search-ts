@@ -11,9 +11,12 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@langchain/classic": "^1.0.32",
     "@langchain/community": "^1.1.28",
     "@langchain/core": "^1.1.45",
+    "@langchain/ollama": "^1.2.7",
     "@langchain/openai": "^1.4.5",
+    "faiss-node": "^0.5.1",
     "langchain": "^1.4.0",
     "pdf-parse": "^2.4.5"
   },
