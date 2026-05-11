@@ -172,7 +172,9 @@ const model = new ChatOpenAI({
 });
 
 // 4. The RAG Process
-const query = "What was Nike's total revenue in 2023 and how does it compare to 2022?";
+// const query = "What was Nike's total revenue in 2023 and how does it compare to 2022?";
+const query = "Based on the 10-K, what are the top 3 biggest risks to Nike's future growth, and how is management planning to mitigate them?";
+
 
 // Retrieve chunks
 const results = await vectorStore.similaritySearch(query, 6);
@@ -181,7 +183,7 @@ const context = results.map(res => res.pageContent).join("\n\n");
 // Generate Answer
 console.log("\n--- Consulting Gemma 4 (NVIDIA NIM) ---");
 
-const response = await model.invoke([
+const response = await model.stream([
     ["system", `You are a financial analyst. Use the following Nike 10-K context to answer the user.
     If the answer isn't in the context, say you don't know.
     
@@ -190,4 +192,7 @@ const response = await model.invoke([
 ]);
 
 console.log("\nFINAL ANSWER:");
-console.log(response.content);
+for await (const chunk of response) {
+    process.stdout.write(chunk.content.toString() || "");
+}
+console.log("\n\n--- End of Report ---");
